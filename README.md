@@ -13,7 +13,7 @@ I will try to get more formal documentation up soon but here's some bullet point
 * The hidden input element's `name` attribute will be set by either the entitypicker element's id or the HTML5 style data attribute `data-input-name`.
 * When used in a form the inputs are submitted just like any other group of inputs that share a name attribute.
 * Can add single or a group of entities through a JavaScript call. This allows items to be prepopulated on page load (for example on an edit page).
-* Has 2 events which fire when an entity is added or removed (entityAddedEvent, entityRemovedEvent).
+* Has 2 events which fire when an entity is added or removed (entityadded, entityremoved).
 * Can take a `maxUsers` parameter during configuration to set max entities that can be picked on each matched elements.
 * Can read an HTML5 style data attribute data-max-users on the entitypicker element to set max entities that can be picked.
 * Prevents duplicate entity picking by checking the value of the entity being added.
