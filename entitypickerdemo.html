@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/themes/cupertino/jquery-ui.min.css" rel="stylesheet" />
+		<link href="entitypicker.css" rel="stylesheet" />
+		
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/jquery-ui.min.js"></script>
+		<script src="entitypicker.js"></script>
+		<script type="text/javascript">
+		$(function() {
+			$(".picker").entitypicker({
+				source: function(req, response) {
+					$.ajax({
+						type: 'GET',
+						url: "http://query.yahooapis.com/v1/public/yql?format=json&q=select%20name%2Cwoeid%2Ccountry%2Cadmin1%20from%20geo.places%20where%20text%3D%22" + req.term + "%22",
+						dataType: 'jsonp',
+						crossDomain: true,
+						success: function (data, textStatus) {
+							if (data.query.count > 0) {
+								var dataObj = data.query.count == 1 ? data.query.results : data.query.results.place;
+								response( $.map(dataObj, function(item) {
+									return {
+										value: item.woeid,
+										label: item.name + 
+											(item.admin1 ? (item.admin1.type == 'State' || item.admin1.type == 'Province') ? ', '+item.admin1.content : '' : '')  + 
+											(item.country ? ' (' + item.country.code + ')' : '')
+									};
+								}));
+							} else {
+								response([]);
+							}
+						},
+						error: function(a,b,c) { alert("Error: " + b + "; " + c); },
+					});
+				}
+			});
+			
+			$(".picker").on("entityadded", function(e) {
+				eventsContainer = $(this).parent(".demoContainer").find("ul.events");
+				msg = "Added " + e.text + " to form input '" + e.inputName + "' with value: " + e.value;
+				eventsContainer.append("<li data-value='"+ e.value +"'><span>"+ msg +"</span></li>");
+			});
+			
+			$(".picker").on("entityremoved", function(e) {
+				eventsContainer = $(this).parent(".demoContainer").find("ul.events");
+				eventsContainer.append("<li>Removed item from form input '"+ e.inputName +"' with value: " + e.value + "</li>");
+				eventsContainer.find("li[data-value='"+e.value+"']").remove();
+			});
+		});
+		</script>
+	</head>
+	<body>
+		<h2>A quick and dirty demonstration of the entitypicker plugin.</h2>
+		<h3>Location pickers are using Yahoo Query Language</h3>
+		<div class='demoContainer'>
+			<span>Departure Location(s):</span>
+			<div id="depart" class="picker"></div>
+			<ul class="events"></ul>
+		</div>
+		<div class='demoContainer'>
+			<span>Arrival Location(s):</span>
+			<div id="arrive" class="picker"></div>
+			<ul class="events"></ul>
+		</div>
+	</body>
+</html>

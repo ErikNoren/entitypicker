@@ -1,0 +1,45 @@
+.entityPickerParent {
+	height: auto;
+	border: 1px solid black;
+	overflow: auto;
+	cursor: text;
+}
+
+input.entityPickerInput {
+	border: 0px;
+	float: left;
+	width: 100px;
+	padding: 0;
+	margin: 3px 3px 3px 3px;
+}
+
+input.entityPickerInput:focus {
+	/* Override default MVC styles to keep the input box cloaked in div */
+	border: none;
+}
+
+.entityClear {
+	clear: both;
+}
+
+.entityPickerDisabled {
+	background-color: #AAB;
+}
+
+.entityContainer {
+	cursor: default;
+}
+
+.entityEntry {
+	float:left;
+	margin: 3px 3px 3px 3px;
+}
+
+.entityEntry .innerWrapper {
+	padding: 1px 0 1px 0;
+}
+
+.entityEntry .innerWrapper .entityDisplay {
+	float:left;
+	margin-left: 2px;
+}
