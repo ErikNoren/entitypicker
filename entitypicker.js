@@ -200,11 +200,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 						if (event.keyCode == $.ui.keyCode.BACKSPACE) {
 							if ($this.val().length < 1) {		
 								entityContainer = $this.parent().find(".entityContainer:last");
-								entityInput = entityContainer.find("input");
-								entityRemovedEvent.value = entityInput.val();
-								entityRemovedEvent.inputName = entityInput.attr("name");
-								$this.trigger(entityRemovedEvent);
-								entityContainer.remove();
+								if (entityContainer) {
+									entityInput = entityContainer.find("input");
+									entityRemovedEvent.value = entityInput.val();
+									entityRemovedEvent.inputName = entityInput.attr("name");
+									$this.trigger(entityRemovedEvent);
+									entityContainer.remove();
+								}
 							}
 						}
 					});
