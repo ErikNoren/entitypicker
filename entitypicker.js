@@ -168,6 +168,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 					});
 					
 					pickerInput = $this.find("input.entityPickerInput");
+					
+					pickerInput.on("focusout", function(event) {
+						$(this).parent().css("outline", "none");
+						event.stopPropagation();
+					});
+					
+					pickerInput.on("focusin", function(event) {
+						$(this).parent().css("outline", "-webkit-focus-ring-color auto 5px");
+						event.stopPropagation();
+					});
+					
 					pickerInput.autocomplete({
 						source: configured.source,
 						minLength: configured.minSearchLength,
