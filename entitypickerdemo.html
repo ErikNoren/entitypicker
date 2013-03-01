@@ -11,14 +11,16 @@
 			.picker { width: 400px; }
 		</style>
 		<script type="text/javascript">
+		var serviceResponse;
 		$(function() {
-			$(".picker").entitypicker({
-				source: function(req, response) {
+			$(".locationsearch").entitypicker({
+				source: function(request, response) {
 					$.ajax({
 						type: 'GET',
-						url: "http://query.yahooapis.com/v1/public/yql?format=json&q=select%20name%2Cwoeid%2Ccountry%2Cadmin1%20from%20geo.places%20where%20text%3D%22" + req.term + "%22",
+						url: "http://query.yahooapis.com/v1/public/yql?format=json&q=select%20name%2Cwoeid%2Ccountry%2Cadmin1%20from%20geo.places%20where%20text%3D%22" + request.term + "%22",
 						dataType: 'jsonp',
 						crossDomain: true,
+						error: function(a,b,c) { alert("Error: " + b + "; " + c); },
 						success: function (data, textStatus) {
 							if (data.query.count > 0) {
 								var dataObj = data.query.count == 1 ? data.query.results : data.query.results.place;
@@ -33,19 +35,42 @@
 							} else {
 								response([]);
 							}
-						},
-						error: function(a,b,c) { alert("Error: " + b + "; " + c); },
+						}
 					});
 				}
 			});
 			
-			$(".picker").on("entityadded", function(e) {
+			$("#imdbshows").entitypicker({
+				source: function(request, response) {
+					$.ajax({
+						type: 'GET',
+						url: 'http://imdbapi.org/?type=json&plot=none&episode=0&limit=10&yg=0&mt=none&lang=en-US&offset=&aka=simple&release=simple&business=0&tech=0&title=' + request.term,
+						dataType: 'json',
+						crossDomain: true,
+						error: function(a,b,c) { alert("Error: " + b + "; " + c); },
+						success: function (data, textStatus) {
+							if (data && data.length > 0) {
+								response( $.map(data, function(item) {
+									return {
+										value: item.imdb_id,
+										label: item.title
+									};
+								}));
+							} else {
+								response([]);
+							}
+						}
+					});
+				}
+			});
+			
+			$(".locationsearch").on("entityadded", function(e) {
 				eventsContainer = $(this).parent(".demoContainer").find("ul.events");
 				msg = "Added " + e.text + " to '" + e.inputName + "' with value: " + e.value;
 				eventsContainer.append("<li data-value='"+ e.value +"'><span>"+ msg +"</span></li>");
 			});
 			
-			$(".picker").on("entityremoved", function(e) {
+			$(".locationsearch").on("entityremoved", function(e) {
 				eventsContainer = $(this).parent(".demoContainer").find("ul.events");
 				eventsContainer.append("<li>Removed from '"+ e.inputName +"' with value: " + e.value + "</li>");
 				eventsContainer.find("li[data-value='"+e.value+"']").remove();
@@ -57,11 +82,12 @@
 				return false;
 			});
 		});
+		
 		</script>
 	</head>
 	<body>
 		<h2>A quick and dirty demonstration of the entitypicker plugin.</h2>
-		<h3>Location pickers are using Yahoo Query Language</h3>
+		<h3>Location pickers use Yahoo Query Language, movies from IMDB API.</h3>
 		
 		<form id="demoform">
 			<table>
@@ -74,7 +100,7 @@
 					<td>
 						<div class='demoContainer'>
 							<span><strong>Departure Location(s):</strong></span>
-							<div id="depart" class="picker"></div>
+							<div id="depart" class="picker locationsearch"></div>
 							<ul class="events"></ul>
 						</div>
 					</td>
@@ -88,7 +114,7 @@
 					<td>
 						<div class='demoContainer'>
 							<span><strong>Arrival Location(s):</strong></span>
-							<div id="arrive" class="picker"></div>
+							<div id="arrive" class="picker locationsearch"></div>
 							<ul class="events"></ul>
 						</div>
 					</td>
@@ -96,6 +122,18 @@
 					<td style="vertical-align: top">
 						<strong>Entities can be queried out using javascript. This is JSON.stringify:</strong>
 						<div id="jsonstringify"></div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class='demoContainer'>
+							<span><strong>In Flight Movie(s):</strong></span>
+							<div id="imdbshows" class="picker"></div>
+							<ul class="events"></ul>
+						</div>
+					</td>
+					<td>&nbsp;</td>
+					<td style="vertical-align: top">
 					</td>
 				</tr>
 			</table>
