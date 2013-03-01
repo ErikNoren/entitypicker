@@ -8,9 +8,7 @@
 		<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/jquery-ui.min.js"></script>
 		<script src="entitypicker.js"></script>
 		<style>
-			.picker {
-				width: 600px;
-			}
+			.picker { width: 400px; }
 		</style>
 		<script type="text/javascript">
 		$(function() {
@@ -43,14 +41,20 @@
 			
 			$(".picker").on("entityadded", function(e) {
 				eventsContainer = $(this).parent(".demoContainer").find("ul.events");
-				msg = "Added " + e.text + " to form input '" + e.inputName + "' with value: " + e.value;
+				msg = "Added " + e.text + " to '" + e.inputName + "' with value: " + e.value;
 				eventsContainer.append("<li data-value='"+ e.value +"'><span>"+ msg +"</span></li>");
 			});
 			
 			$(".picker").on("entityremoved", function(e) {
 				eventsContainer = $(this).parent(".demoContainer").find("ul.events");
-				eventsContainer.append("<li>Removed item from form input '"+ e.inputName +"' with value: " + e.value + "</li>");
+				eventsContainer.append("<li>Removed from '"+ e.inputName +"' with value: " + e.value + "</li>");
 				eventsContainer.find("li[data-value='"+e.value+"']").remove();
+			});
+			
+			$("#demoform").submit(function() {
+				$("#formserialize").text($("#demoform").serialize());
+				$("#jsonstringify").text(JSON.stringify($(".picker").entitypicker("getEntities")));
+				return false;
 			});
 		});
 		</script>
@@ -58,15 +62,44 @@
 	<body>
 		<h2>A quick and dirty demonstration of the entitypicker plugin.</h2>
 		<h3>Location pickers are using Yahoo Query Language</h3>
-		<div class='demoContainer'>
-			<span>Departure Location(s):</span>
-			<div id="depart" class="picker" data-max-entities="3"></div>
-			<ul class="events"></ul>
-		</div>
-		<div class='demoContainer'>
-			<span>Arrival Location(s):</span>
-			<div id="arrive" class="picker"></div>
-			<ul class="events"></ul>
-		</div>
+		
+		<form id="demoform">
+			<table>
+				<tr>
+					<th style="border-bottom: 1px solid black">Form Input:</th>
+					<th></th>
+					<th style="border-bottom: 1px solid black">On Form Submit:</th>
+				</tr>
+				<tr>
+					<td>
+						<div class='demoContainer'>
+							<span><strong>Departure Location(s):</strong></span>
+							<div id="depart" class="picker"></div>
+							<ul class="events"></ul>
+						</div>
+					</td>
+					<td style="width: 20px">&nbsp;</td>
+					<td style="vertical-align: top">
+						<strong>Entities are submitted as form elements. Here's the post data:</strong>
+						<div id="formserialize"></div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class='demoContainer'>
+							<span><strong>Arrival Location(s):</strong></span>
+							<div id="arrive" class="picker"></div>
+							<ul class="events"></ul>
+						</div>
+					</td>
+					<td>&nbsp;</td>
+					<td style="vertical-align: top">
+						<strong>Entities can be queried out using javascript. This is JSON.stringify:</strong>
+						<div id="jsonstringify"></div>
+					</td>
+				</tr>
+			</table>
+			<input type="submit" value="Save" />
+		</form>
 	</body>
 </html>
