@@ -174,9 +174,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 						select: function( event, ui ) {
 							if ( ui.item ) {
 								pickerContainer = $this.parent(".entityPickerParent").parent("div");
-								methods.addEntity.call(pickerContainer, {value: ui.item.value, text: ui.item.label});
+								var itemLabel = ui.item.label;
+								var itemValue = ui.item.value;
 								this.value = "";
 								this.focus();
+								methods.addEntity.call(pickerContainer, {value: itemValue, text: itemLabel});
+								
 								return false;
 							}
 						},
