@@ -200,7 +200,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 						if (event.keyCode == $.ui.keyCode.BACKSPACE) {
 							if ($this.val().length < 1) {		
 								entityContainer = $this.parent().find(".entityContainer:last");
-								if (entityContainer) {
+								if (entityContainer.length > 0) {
 									entityInput = entityContainer.find("input");
 									entityRemovedEvent.value = entityInput.val();
 									entityRemovedEvent.inputName = entityInput.attr("name");
