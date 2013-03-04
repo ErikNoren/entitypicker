@@ -26,7 +26,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 		maxEntities: -1, //unlimited selection
 		minSearchLength: 2, //start search after 2 characters
 		source: function( request, response ) {
-			response([label: 'Source Not Configured', value: -1]);
+			response([{label: 'Source Not Configured', value: -1}]);
 		},
 	};
 	
