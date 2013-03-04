@@ -213,7 +213,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 					pickerInput.on("keydown", function(event) {
 						$this = $(this);
 						entityContainer = $this.parent().find(".entityContainer:last");
-						entityEntry = entityContainer.find("entityEntry");
+						entityEntry = entityContainer.find(".entityEntry");
 						markedForDelete = entityEntry.hasClass("entityDelete");
 						
 						if ((event.keyCode == $.ui.keyCode.BACKSPACE) ||
