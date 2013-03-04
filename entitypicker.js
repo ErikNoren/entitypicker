@@ -1,5 +1,5 @@
 /*
-Entity Picker v 0.2.1
+Entity Picker v 0.2.2
 Copyright (C) 2013 Erik Noren
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software
@@ -26,6 +26,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 		maxEntities: -1, //unlimited selection
 		minSearchLength: 2, //start search after 2 characters
 		source: function( request, response ) {
+			response([label: 'Source Not Configured', value: -1]);
 		},
 	};
 	
@@ -211,16 +212,25 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 					
 					pickerInput.on("keydown", function(event) {
 						$this = $(this);
-						if (event.keyCode == $.ui.keyCode.BACKSPACE) {
-							if ($this.val().length < 1) {		
-								entityContainer = $this.parent().find(".entityContainer:last");
-								if (entityContainer.length > 0) {
+						entityContainer = $this.parent().find(".entityContainer:last");
+						markedForDelete = entityContainer.hasClass("entityDelete");
+						
+						if ((event.keyCode == $.ui.keyCode.BACKSPACE) ||
+							(event.keyCode == $.ui.keyCode.DELETE && markedForDelete)) {
+							if ($this.val().length < 1 && entityContainer.length > 0) {
+								if (markedForDelete) {
 									entityInput = entityContainer.find("input");
 									entityRemovedEvent.value = entityInput.val();
 									entityRemovedEvent.inputName = entityInput.attr("name");
 									$this.trigger(entityRemovedEvent);
 									entityContainer.remove();
+								} else {
+									entityContainer.addClass("entityDelete");
 								}
+							}
+						} else {
+							if (markedForDelete) {
+								entityContainer.removeClass("entityDelete");
 							}
 						}
 					});
