@@ -213,7 +213,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 					pickerInput.on("keydown", function(event) {
 						$this = $(this);
 						entityContainer = $this.parent().find(".entityContainer:last");
-						markedForDelete = entityContainer.hasClass("entityDelete");
+						entityEntry = entityContainer.find("entityEntry");
+						markedForDelete = entityEntry.hasClass("entityDelete");
 						
 						if ((event.keyCode == $.ui.keyCode.BACKSPACE) ||
 							(event.keyCode == $.ui.keyCode.DELETE && markedForDelete)) {
@@ -225,12 +226,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 									$this.trigger(entityRemovedEvent);
 									entityContainer.remove();
 								} else {
-									entityContainer.addClass("entityDelete");
+									entityEntry.addClass("entityDelete");
 								}
 							}
 						} else {
 							if (markedForDelete) {
-								entityContainer.removeClass("entityDelete");
+								entityEntry.removeClass("entityDelete");
 							}
 						}
 					});
