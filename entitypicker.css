@@ -31,6 +31,10 @@ input.entityPickerInput:focus {
 	cursor: default;
 }
 
+.entityDelete {
+	border: 1px solid red;
+}
+
 .entityEntry {
 	float:left;
 	margin: 3px 3px 3px 3px;
