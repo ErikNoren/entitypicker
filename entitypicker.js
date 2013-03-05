@@ -171,12 +171,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 					pickerInput = $this.find("input.entityPickerInput");
 					
 					pickerInput.on("focusout", function(event) {
-						$(this).parent().css("outline", "none");
+						$(this).parent().removeClass("entityContainerFocused");
 						event.stopPropagation();
 					});
 					
 					pickerInput.on("focusin", function(event) {
-						$(this).parent().css("outline", "-webkit-focus-ring-color auto 5px");
+						$(this).parent().addClass("entityContainerFocused");
 						event.stopPropagation();
 					});
 					

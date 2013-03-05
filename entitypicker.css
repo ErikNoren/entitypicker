@@ -29,6 +29,11 @@ input.entityPickerInput:focus {
 
 .entityContainer {
 	cursor: default;
+	outline: none;
+}
+
+.entityContainerFocused {
+	outline: -webkit-focus-ring-color auto 5px;
 }
 
 .entityDelete {
