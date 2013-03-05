@@ -99,13 +99,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 	
 		addEntity: function(entity) {
 			return this.each(function() {
-				internalAddEntities.apply($(this), [].concat(entity));
+				var entities = [].push(entity);
+				internalAddEntities.call($(this), entities);
 			});
 		},
 		
 		addEntities: function(entities) {
 			return this.each(function() {
-				internalAddEntities.apply($(this), entities);
+				internalAddEntities.call($(this), entities);
 			});
 		},
 		
