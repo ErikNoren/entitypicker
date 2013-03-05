@@ -63,6 +63,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 	}
 	
 	function internalAddEntities(entities) {
+		$this = this;
 		data = this.data(dataKey);
 		
 		if ( ! data /*not initialized*/ ) {
@@ -71,7 +72,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 			userContainer = $this.find(".entityPickerParent div:first");
 		
 			$.each(entities, function(idx, item) {
-				var existingUser = this.find(".entityEntry span[data-entity-id='" + item.value + "']");
+				var existingUser = $this.find(".entityEntry span[data-entity-id='" + item.value + "']");
 				if (existingUser.length > 0) {
 					existingUser.effect("highlight", {}, 1000);
 					return;
@@ -79,16 +80,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 		
 				newEntity = $(getEntityHtml(item, data.inputName));
 				userContainer.append(newEntity);
-				entityAddedEvent.value = entityValue.apply(this, item);
+				entityAddedEvent.value = entityValue.apply($this, item);
 				entityAddedEvent.text = item.text;
 				entityAddedEvent.inputName = data.inputName;
-				this.trigger(entityAddedEvent);
+				$this.trigger(entityAddedEvent);
 			});
 		
 			if (data.maxEntities >= 0) {
-				if (this.find(".entityContainer").length >= data.maxEntities) {
-					this.addClass("entityPickerDisabled");
-					this.find("input.entityPickerInput").hide();
+				if ($this.find(".entityContainer").length >= data.maxEntities) {
+					$this.addClass("entityPickerDisabled");
+					$this.find("input.entityPickerInput").hide();
 				}
 			}
 		}
