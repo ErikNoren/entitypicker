@@ -55,7 +55,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 	}
 	
 	function getEntityHtml(entity, configuration) {
-		var resolvedValue = configuration.entityValue.apply(this, entity);
+		var resolvedValue = configuration.entityValue.call(this, entity);
 		return "<div class='entityContainer'><div class='entityEntry ui-widget ui-widget-content ui-state-default'><div class='innerWrapper'><span data-entity-id='"
 				+ entity.value + "' class='entityDisplay'>" + entity.text +
 				"</span><span class='ui-icon ui-icon-close deleteEntity'></span></div></div><input name='"
@@ -80,7 +80,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 		
 				newEntity = $(getEntityHtml(item, data));
 				userContainer.append(newEntity);
-				entityAddedEvent.value = entityValue.apply($this, item);
+				entityAddedEvent.value = entityValue.call($this, item);
 				entityAddedEvent.text = item.text;
 				entityAddedEvent.inputName = data.inputName;
 				$this.trigger(entityAddedEvent);
