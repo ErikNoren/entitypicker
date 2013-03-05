@@ -54,17 +54,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 		return allOptions;
 	}
 	
-	function getEntityHtml(entity, inputName) {
-		var resolvedValue = entityValue.apply(this, entity);
+	function getEntityHtml(entity, configuration) {
+		var configuration.resolvedValue = entityValue.apply(this, entity);
 		return "<div class='entityContainer'><div class='entityEntry ui-widget ui-widget-content ui-state-default'><div class='innerWrapper'><span data-entity-id='"
 				+ entity.value + "' class='entityDisplay'>" + entity.text +
 				"</span><span class='ui-icon ui-icon-close deleteEntity'></span></div></div><input name='"
-				+ inputName + "' type='hidden' value='" + resolvedValue + "'/></div>"
+				+ configuration.inputName + "' type='hidden' value='" + resolvedValue + "'/></div>"
 	}
 	
 	function internalAddEntities(entities) {
 		$this = this;
-		data = this.data(dataKey);
+		data = $this.data(dataKey);
 		
 		if ( ! data /*not initialized*/ ) {
 			alert("You must first configure the picker before adding entries.");
@@ -78,7 +78,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 					return;
 				}
 		
-				newEntity = $(getEntityHtml(item, data.inputName));
+				newEntity = $(getEntityHtml(item, data));
 				userContainer.append(newEntity);
 				entityAddedEvent.value = entityValue.apply($this, item);
 				entityAddedEvent.text = item.text;
