@@ -1,5 +1,5 @@
 /*
-Entity Picker v 0.2.2
+Entity Picker v 0.2.3
 Copyright (C) 2013 Erik Noren
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software
@@ -28,6 +28,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 		source: function( request, response ) {
 			response([{label: 'Source Not Configured', value: -1}]);
 		},
+		entityValue: function(entity) {
+			return entity.value + ";" + entity.text;
+		}
 	};
 	
 	function resolveOptions(jQelem, options) {
@@ -51,70 +54,57 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 		return allOptions;
 	}
 	
-	function getEntityHtml(value, text, inputName) {
+	function getEntityHtml(entity, inputName) {
+		var resolvedValue = entityValue.apply(this, entity);
 		return "<div class='entityContainer'><div class='entityEntry ui-widget ui-widget-content ui-state-default'><div class='innerWrapper'><span data-entity-id='"
-				+ value + "' class='entityDisplay'>" + text +
+				+ entity.value + "' class='entityDisplay'>" + entity.text +
 				"</span><span class='ui-icon ui-icon-close deleteEntity'></span></div></div><input name='"
-				+ inputName + "' type='hidden' value='" + value + ";" + text + "'/></div>"
+				+ inputName + "' type='hidden' value='" + resolvedValue + "'/></div>"
+	}
+	
+	function internalAddEntities(entities) {
+		data = this.data(dataKey);
+		
+		if ( ! data /*not initialized*/ ) {
+			alert("You must first configure the picker before adding entries.");
+		} else {
+			userContainer = $this.find(".entityPickerParent div:first");
+		
+			$.each(entities, function(idx, item) {
+				var existingUser = this.find(".entityEntry span[data-entity-id='" + item.value + "']");
+				if (existingUser.length > 0) {
+					existingUser.effect("highlight", {}, 1000);
+					return;
+				}
+		
+				newEntity = $(getEntityHtml(item, data.inputName));
+				userContainer.append(newEntity);
+				entityAddedEvent.value = entityValue.apply(this, item);
+				entityAddedEvent.text = item.text;
+				entityAddedEvent.inputName = data.inputName;
+				this.trigger(entityAddedEvent);
+			});
+		
+			if (data.maxEntities >= 0) {
+				if (this.find(".entityContainer").length >= data.maxEntities) {
+					this.addClass("entityPickerDisabled");
+					this.find("input.entityPickerInput").hide();
+				}
+			}
+		}
 	}
 	
 	var methods = {
 	
 		addEntity: function(entity) {
 			return this.each(function() {
-				$this = $(this);
-				data = $this.data(dataKey);
-				if ( !data /*not initialized*/ ) {
-					alert("You must first configure the picker before adding entries.");
-				} else {
-					var existingUser = $this.find(".entityEntry span[data-entity-id='" + entity.value + "']");
-					if (existingUser.length > 0) {
-						existingUser.effect("highlight", {}, 1000);
-						return;
-					}
-					
-					//Add a span to the div and reposition the div under the searh text box and reset the controls
-					ctl = $this.find(".entityPickerParent div:first");
-					newEntity = $(getEntityHtml(entity.value, entity.text, data.inputName));
-					ctl.append(newEntity);
-					entityAddedEvent.value = newEntity.find("input").val();
-					entityAddedEvent.text = entity.text;
-					entityAddedEvent.inputName = data.inputName;
-					$this.trigger(entityAddedEvent);
-
-					maxEntities = data.maxEntities;
-					if (maxEntities >= 0) {
-						if (ctl.find(".entityContainer").length >= maxEntities) {
-							$this.addClass("entityPickerDisabled");
-							$this.find("input.entityPickerInput").hide();
-						}
-					}
-				}
+				internalAddEntities.apply($(this), $.makeArray(entity));
 			});
 		},
 		
 		addEntities: function(entities) {
 			return this.each(function() {
-				$this = $(this);
-				data = $this.data(dataKey);
-				
-				if ( !data /*not initialized*/ ) {
-					alert("You must first configure the picker before adding entries.");
-				} else {
-					userContainer = $this.find(".entityPickerParent div:first");
-					
-					$.each(entities, function() {
-						userContainer.append(getEntityHtml(this.value, this.text, data.inputName));
-					});
-					
-					var maxEntities = data.maxEntities;
-					if (maxEntities >= 0) {
-						if ($this.find(".entityContainer").length >= maxEntities) {
-							$this.addClass("entityPickerDisabled");
-							$this.find("input.entityPickerInput").hide();
-						}
-					}
-				}
+				internalAddEntities.apply($(this), entities);
 			});
 		},
 		
