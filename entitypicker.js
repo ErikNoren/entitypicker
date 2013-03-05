@@ -80,7 +80,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 		
 				newEntity = $(getEntityHtml(item, data));
 				userContainer.append(newEntity);
-				entityAddedEvent.value = entityValue.call($this, item);
+				entityAddedEvent.value = data.entityValue.call($this, item);
 				entityAddedEvent.text = item.text;
 				entityAddedEvent.inputName = data.inputName;
 				$this.trigger(entityAddedEvent);
@@ -99,7 +99,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 	
 		addEntity: function(entity) {
 			return this.each(function() {
-				internalAddEntities.apply($(this), $.makeArray(entity));
+				internalAddEntities.apply($(this), [].concat(entity));
 			});
 		},
 		
