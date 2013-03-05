@@ -64,13 +64,13 @@
 				}
 			});
 			
-			$(".locationsearch").on("entityadded", function(e) {
+			$(".locationsearch")
+			.on("entityadded", function(e) {
 				eventsContainer = $(this).parent(".demoContainer").find("ul.events");
 				msg = "Added " + e.text + " to '" + e.inputName + "' with value: " + e.value;
 				eventsContainer.append("<li data-value='"+ e.value +"'><span>"+ msg +"</span></li>");
-			});
-			
-			$(".locationsearch").on("entityremoved", function(e) {
+			})
+			.on("entityremoved", function(e) {
 				eventsContainer = $(this).parent(".demoContainer").find("ul.events");
 				eventsContainer.append("<li>Removed from '"+ e.inputName +"' with value: " + e.value + "</li>");
 				eventsContainer.find("li[data-value='"+e.value+"']").remove();
@@ -128,7 +128,7 @@
 					<td>
 						<div class='demoContainer'>
 							<span><strong>In Flight Movie(s):</strong></span>
-							<div id="imdbshows" class="picker"></div>
+							<div id="imdbshows" class="picker" data-max-entities="2"></div>
 							<ul class="events"></ul>
 						</div>
 					</td>

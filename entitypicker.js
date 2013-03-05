@@ -142,11 +142,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 					//Set up the main HTML container:
 					$this.html("<div class='entityPickerParent'><div></div><input type='text' class='entityPickerInput ui-widget'/><div class='entityClear'></div></div>");
 					
-					if (configured.maxEntities > 0) {
-						$this.attr("title", "This field is limited to " + configured.maxEntities + " selection" + (configured.maxEntities > 1 ? "s." : "."));
+					if (configured.maxEntities >= 0) {
+						$this.attr("title", "This field is limited to " + configured.maxEntities + " selection" + (configured.maxEntities != 1 ? "s." : "."));
+					
+						if ($this.find(".entityContainer").length >= configured.maxEntities) {
+							$this.addClass("entityPickerDisabled");
+							$this.find("input.entityPickerInput").hide();
+						}
 					}
 					
-					$this.on("click", "span.deleteEntity", function () {
+					$this
+					.on("click", "span.deleteEntity", function () {
 						var ctl = $(this).closest(".entityContainer");
 						entityContainer = ctl.find("input");
 						entityRemovedEvent.value = entityContainer.val();
@@ -160,57 +166,23 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 							$this.removeClass("entityPickerDisabled");
 							$this.find("input.entityPickerInput").show().focus();
 						}
-					});
-					
-					$this.on("click", ":not(span.deleteEntity)", function (event) {
+					})
+					.on("click", ":not(span.deleteEntity)", function (event) {
 						var that = $(this).find("input.entityPickerInput");
 						that.focus().val(that.val());
 						event.stopPropagation();
 					});
 					
-					pickerInput = $this.find("input.entityPickerInput");
-					
-					pickerInput.on("focusout", function(event) {
+					pickerInput = $this.find("input.entityPickerInput")
+					.on("focusout", function(event) {
 						$(this).parent().removeClass("entityContainerFocused");
 						event.stopPropagation();
-					});
-					
-					pickerInput.on("focusin", function(event) {
+					})
+					.on("focusin", function(event) {
 						$(this).parent().addClass("entityContainerFocused");
 						event.stopPropagation();
-					});
-					
-					pickerInput.autocomplete({
-						source: configured.source,
-						minLength: configured.minSearchLength,
-						select: function( event, ui ) {
-							if ( ui.item ) {
-								pickerContainer = $this.parent(".entityPickerParent").parent("div");
-								var itemLabel = ui.item.label;
-								var itemValue = ui.item.value;
-								this.value = "";
-								this.focus();
-								methods.addEntity.call(pickerContainer, {value: itemValue, text: itemLabel});
-								
-								return false;
-							}
-						},
-						focus: function( event, ui ) {
-							//prevent the autocomplete's input from changing as the user
-							//navigates the available options. This seems like a better
-							//user experience when data isn't a simple list.
-							this.selectedItem = null;
-							return false;
-						},
-						open: function() {
-							$( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
-						},
-						close: function() {
-							$( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
-						}
-					});
-					
-					pickerInput.on("keydown", function(event) {
+					})
+					.on("keydown", function(event) {
 						$this = $(this);
 						entityContainer = $this.parent().find(".entityContainer:last");
 						entityEntry = entityContainer.find(".entityEntry");
@@ -234,14 +206,35 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 								entityEntry.removeClass("entityDelete");
 							}
 						}
-					});
-					
-					if (configured.maxEntities >= 0) {
-						if ($this.find(".entityContainer").length >= configured.maxEntities) {
-							$this.addClass("entityPickerDisabled");
-							$this.find("input.entityPickerInput").hide();
+					})
+					.autocomplete({
+						source: configured.source,
+						minLength: configured.minSearchLength,
+						select: function( event, ui ) {
+							if ( ui.item ) {
+								pickerContainer = $this.parent(".entityPickerParent").parent("div");
+								var itemLabel = ui.item.label;
+								var itemValue = ui.item.value;
+								this.value = "";
+								this.focus();
+								methods.addEntity.call(pickerContainer, {value: itemValue, text: itemLabel});
+								return false;
+							}
+						},
+						focus: function( event, ui ) {
+							//prevent the autocomplete's input from changing as the user
+							//navigates the available options. This seems like a better
+							//user experience when data isn't a simple list.
+							this.selectedItem = null;
+							return false;
+						},
+						open: function() {
+							$( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+						},
+						close: function() {
+							$( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
 						}
-					}
+					});
 				}
 			});
 		}
