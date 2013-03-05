@@ -1,7 +1,7 @@
 entitypicker
 ============
 
-A jQuery plugin which utilizes UI autocomplete to allow for more advanced entity picking and editing. There's also a hastily-constructed [live demo](http://htmlpreview.github.com/?https://github.com/ErikNoren/entitypicker/blob/master/entitypickerdemo.html).
+A jQuery plugin which utilizes UI autocomplete to allow for more advanced entity picking and editing. There's also a hastily-constructed [live demo](http://htmlpreview.github.com/?https://github.com/ErikNoren/entitypicker/blob/master/entitypickerdemo.html?v=5).
 
 I will try to get more formal documentation up soon but here's some bullet points:
 * Uses jQuery UI autocomplete for suggestions and user interaction.
