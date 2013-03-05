@@ -55,7 +55,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 	}
 	
 	function getEntityHtml(entity, configuration) {
-		var configuration.resolvedValue = entityValue.apply(this, entity);
+		var resolvedValue = configuration.entityValue.apply(this, entity);
 		return "<div class='entityContainer'><div class='entityEntry ui-widget ui-widget-content ui-state-default'><div class='innerWrapper'><span data-entity-id='"
 				+ entity.value + "' class='entityDisplay'>" + entity.text +
 				"</span><span class='ui-icon ui-icon-close deleteEntity'></span></div></div><input name='"
