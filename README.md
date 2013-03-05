@@ -2,7 +2,6 @@ entitypicker
 ============
 
 A jQuery plugin which utilizes UI autocomplete to allow for more advanced entity picking and editing. There's also a hastily-constructed [live demo](http://htmlpreview.github.com/?https://github.com/ErikNoren/entitypicker/blob/master/entitypickerdemo.html?v=5).
-<<<<<<< HEAD
 =======
 
 **New in 0.2.3**
@@ -13,7 +12,6 @@ A jQuery plugin which utilizes UI autocomplete to allow for more advanced entity
 **New in 0.2.2**
 * Moved the highlight effect (webkit browsers) from dynamic style to dynamic css class for flexibility.
 * Added a pre-delete style. This should reduce accidental deletes of entities when using backspace key.
->>>>>>> Documentation changes
 
 I will try to get more formal documentation up soon but here's some bullet points:
 * Uses jQuery UI autocomplete for suggestions and user interaction.
