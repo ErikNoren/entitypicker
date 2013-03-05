@@ -41,6 +41,9 @@
 			});
 			
 			$("#imdbshows").entitypicker({
+				entityValue: function(entity) {
+					return entity.value;
+				},
 				source: function(request, response) {
 					$.ajax({
 						type: 'GET',
