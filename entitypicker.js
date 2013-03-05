@@ -99,8 +99,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 	
 		addEntity: function(entity) {
 			return this.each(function() {
-				var entities = [].push(entity);
-				internalAddEntities.call($(this), entities);
+				internalAddEntities.call($(this), [].concat(entities);
 			});
 		},
 		
