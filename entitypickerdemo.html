@@ -59,6 +59,7 @@ serviceResponse = entity;
 							if (data && data.length > 0) {
 								response( $.map(data, function(item) {
 									return {
+										entity: item,
 										value: item.imdb_id,
 										label: item.title
 									};
