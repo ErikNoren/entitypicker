@@ -1,5 +1,5 @@
 /*
-Entity Picker v 0.2.3
+Entity Picker v 0.2.4
 Copyright (C) 2013 Erik Noren
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software
@@ -23,8 +23,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 	var entityRemovedEvent = $.Event("entityremoved");
 	
 	var defaults = {
-		maxEntities: -1, //unlimited selection
 		minSearchLength: 2, //start search after 2 characters
+		maxEntities: -1, //unlimited selection
+		maxEntitiesMessage: function(maxEntityCount) { 
+			return maxEntityCount >= 0 ? "This field is limited to " + maxEntityCount + " selection" + (maxEntityCount != 1 ? "s." : ".") : "";
+		},
 		source: function( request, response ) {
 			response([{label: 'Source Not Configured', value: -1}]);
 		},
@@ -39,6 +42,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 		//check for supported html5 data members and override global options
 		if (jQelem.data("max-entities")) {
 			allOptions.maxEntities = jQelem.data("max-entities");
+		}
+		
+		if (jQelem.data("max-entities-message")) {
+			allOptions.maxEntityMessage = jQelem.data("max-entities-message");
 		}
 		
 		if (jQelem.data("min-search-length")) {
@@ -133,9 +140,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 					//Set up the main HTML container:
 					$this.html("<div class='entityPickerParent'><div></div><input type='text' class='entityPickerInput ui-widget'/><div class='entityClear'></div></div>");
 					
-					if (configured.maxEntities >= 0) {
-						$this.attr("title", "This field is limited to " + configured.maxEntities + " selection" + (configured.maxEntities != 1 ? "s." : "."));
+					if (typeof configured.maxEntitiesMessage === "string" && configured.maxEntitiesMessage.length > 0) {
+						$this.attr("title", configured.maxEntitiesMessage);
+					} else if (typeof configured.maxEntitiesMessage === "function") {
+						message = configured.maxEntitiesMessage.call(this, configured.maxEntities);
+						if (typeof message === 'string' && message.length > 0) {
+							$this.attr("title", message);
+						}
+					}
 					
+					if (configured.maxEntities >= 0) {
 						if ($this.find(".entityContainer").length >= configured.maxEntities) {
 							$this.addClass("entityPickerDisabled");
 							$this.find("input.entityPickerInput").hide();
