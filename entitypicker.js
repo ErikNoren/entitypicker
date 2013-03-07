@@ -17,7 +17,7 @@ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-var testObject = [];
+var testObject;
 
 ;(function ( $, undefined ) {
 	var dataKey = "entitypicker";
@@ -34,6 +34,7 @@ var testObject = [];
 			response([{label: 'Source Not Configured', value: -1}]);
 		},
 		entityValue: function(entity) {
+testObject = entity;
 			return entity.value + ";" + entity.text;
 		}
 	};
@@ -108,10 +109,6 @@ var testObject = [];
 	
 		addEntity: function(entity) {
 			return this.each(function() {
-testObject.push(entity.value);
-testObject.push(entity.text);
-testObject.push(entity.entity);
-testObject.push(entity.item);
 				internalAddEntities.call($(this), [].concat(entity));
 			});
 		},
@@ -224,13 +221,10 @@ testObject.push(entity.item);
 						select: function( event, ui ) {
 							if ( ui.item ) {
 								pickerContainer = $this.parent(".entityPickerParent").parent("div");
-								var entity = ui.item.entity;
 								var testItem = ui.item;
-								var itemLabel = ui.item.label;
-								var itemValue = ui.item.value;
 								this.value = "";
 								this.focus();
-								methods.addEntity.call(pickerContainer, {value: itemValue, text: itemLabel, entity: entity, item: testItem});
+								methods.addEntity.call(pickerContainer, {value: testItem.value, text: testItem.label, item: testItem});
 								return false;
 							}
 						},
