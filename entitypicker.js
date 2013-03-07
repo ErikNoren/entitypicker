@@ -1,5 +1,5 @@
 /*
-Entity Picker v 0.2.4
+Entity Picker v 0.3.0
 Copyright (C) 2013 Erik Noren
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software
@@ -67,7 +67,7 @@ testObject = entity;
 	function getEntityHtml(entity, configuration) {
 		var resolvedValue = configuration.entityValue.call(this, entity);
 		return "<div class='entityContainer'><div class='entityEntry ui-widget ui-widget-content ui-state-default'><div class='innerWrapper'><span data-entity-id='"
-				+ entity.value + "' class='entityDisplay'>" + entity.text +
+				+ entity.value + "' class='entityDisplay'>" + entity.label +
 				"</span><span class='ui-icon ui-icon-close deleteEntity'></span></div></div><input name='"
 				+ configuration.inputName + "' type='hidden' value='" + resolvedValue + "'/></div>"
 	}
@@ -91,7 +91,7 @@ testObject = entity;
 				newEntity = $(getEntityHtml(item, data));
 				userContainer.append(newEntity);
 				entityAddedEvent.value = data.entityValue.call($this, item);
-				entityAddedEvent.text = item.text;
+				entityAddedEvent.text = item.label;
 				entityAddedEvent.inputName = data.inputName;
 				$this.trigger(entityAddedEvent);
 			});
@@ -224,7 +224,7 @@ testObject = entity;
 								var testItem = ui.item;
 								this.value = "";
 								this.focus();
-								methods.addEntity.call(pickerContainer, {value: testItem.value, text: testItem.label, item: testItem});
+								methods.addEntity.call(pickerContainer, testItem);
 								return false;
 							}
 						},
