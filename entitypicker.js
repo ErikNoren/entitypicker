@@ -108,7 +108,10 @@ var testObject = [];
 	
 		addEntity: function(entity) {
 			return this.each(function() {
-testObject.push(entity.value).push(entity.text).push(entity.entity).push(entity.item);
+testObject.push(entity.value);
+testObject.push(entity.text);
+testObject.push(entity.entity);
+testObject.push(entity.item);
 				internalAddEntities.call($(this), [].concat(entity));
 			});
 		},
