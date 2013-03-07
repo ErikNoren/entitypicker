@@ -34,8 +34,7 @@ var testObject;
 			response([{label: 'Source Not Configured', value: -1}]);
 		},
 		entityValue: function(entity) {
-testObject = entity;
-			return entity.value + ";" + entity.text;
+			return entity.value + ";" + entity.label;
 		}
 	};
 	
