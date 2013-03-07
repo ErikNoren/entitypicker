@@ -8,6 +8,7 @@ Here's a [live demo](http://htmlpreview.github.com/?https://github.com/ErikNoren
 **New in 0.3.0**
 
 * We can now pass an entity during configuration of the entitypicker source and get it again in the entityValue function definition. This gives greater control and flexibility for generating the value that will be stored in the hidden input fields that are generated when an entity is picked. Look at the Movie picker in the example HTML page.
+
 *BREAKING CHANGE: When calling the addEntity or addEntities methods on entitypicker the 'text' parameter has been renamed to 'label' to be consistent with the autocomplete box.*
 
 **New in 0.2.4**
