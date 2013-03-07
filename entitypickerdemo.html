@@ -44,7 +44,7 @@
 			
 			$("#imdbshows").entitypicker({
 				entityValue: function(entity) {
-					return entity.value;
+					return entity.value + "(" + entity.entity.year + ")";
 				},
 				source: function(request, response) {
 					$.ajax({
