@@ -45,7 +45,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 		}
 		
 		if (jQelem.data("max-entities-message")) {
-			allOptions.maxEntityMessage = jQelem.data("max-entities-message");
+			allOptions.maxEntitiesMessage = jQelem.data("max-entities-message");
 		}
 		
 		if (jQelem.data("min-search-length")) {
