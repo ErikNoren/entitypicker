@@ -26,7 +26,6 @@
 								var dataObj = data.query.count == 1 ? data.query.results : data.query.results.place;
 								response( $.map(dataObj, function(item) {
 									return {
-										entity: item,
 										value: item.woeid,
 										label: item.name + 
 											(item.admin1 ? (item.admin1.type == 'State' || item.admin1.type == 'Province') ? ', '+item.admin1.content : '' : '')  + 
@@ -42,8 +41,9 @@
 			});
 			
 			$("#imdbshows").entitypicker({
-				entityValue: function(entity) {
-					return entity.value + "(" + entity.entity.year + ")";
+				entityValue: function(item) {
+					/* In source:success function we passed in the item to get access to data elements here! */
+					return item.value + "(" + item.entity.year + ")";
 				},
 				source: function(request, response) {
 					$.ajax({
@@ -56,9 +56,9 @@
 							if (data && data.length > 0) {
 								response( $.map(data, function(item) {
 									return {
-										entity: item,
-										value: item.imdb_id,
-										label: item.title
+										value: item.imdb_id, /* set autocomplete parameters */
+										label: item.title,
+										entity: item /* pass item; we can use it in entityValue! */
 									};
 								}));
 							} else {
