@@ -11,8 +11,6 @@
 			.picker { width: 400px; }
 		</style>
 		<script type="text/javascript">
-		var serviceResponse;
-		
 		$(function() {
 			$(".locationsearch").entitypicker({
 				maxEntities: 3,
@@ -45,7 +43,6 @@
 			
 			$("#imdbshows").entitypicker({
 				entityValue: function(entity) {
-serviceResponse = entity;
 					return entity.value + "(" + entity.entity.year + ")";
 				},
 				source: function(request, response) {
