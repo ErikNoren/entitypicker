@@ -17,6 +17,8 @@ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+var testObject = [];
+
 ;(function ( $, undefined ) {
 	var dataKey = "entitypicker";
 	var entityAddedEvent = $.Event("entityadded");
@@ -106,6 +108,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 	
 		addEntity: function(entity) {
 			return this.each(function() {
+testObject.push(entity.value).push(entity.text).push(entity.entity).push(entity.item);
 				internalAddEntities.call($(this), [].concat(entity));
 			});
 		},
@@ -218,11 +221,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 						select: function( event, ui ) {
 							if ( ui.item ) {
 								pickerContainer = $this.parent(".entityPickerParent").parent("div");
+								var entity = ui.item.entity;
+								var testItem = ui.item;
 								var itemLabel = ui.item.label;
 								var itemValue = ui.item.value;
 								this.value = "";
 								this.focus();
-								methods.addEntity.call(pickerContainer, {value: itemValue, text: itemLabel});
+								methods.addEntity.call(pickerContainer, {value: itemValue, text: itemLabel, entity: entity, item: testItem});
 								return false;
 							}
 						},

@@ -27,6 +27,7 @@
 								var dataObj = data.query.count == 1 ? data.query.results : data.query.results.place;
 								response( $.map(dataObj, function(item) {
 									return {
+										entity: item,
 										value: item.woeid,
 										label: item.name + 
 											(item.admin1 ? (item.admin1.type == 'State' || item.admin1.type == 'Province') ? ', '+item.admin1.content : '' : '')  + 
