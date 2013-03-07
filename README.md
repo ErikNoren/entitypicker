@@ -5,6 +5,10 @@ A jQuery plugin which utilizes UI autocomplete to allow for more advanced entity
 
 Here's a [live demo](http://htmlpreview.github.com/?https://github.com/ErikNoren/entitypicker/blob/master/entitypickerdemo.html?v=6) to check out some of the features.
 
+**New in 0.3.0**
+*BREAKING CHANGE: When calling the addEntity or addEntities methods on entitypicker the 'text' parameter has been renamed to 'label' to be consistent with the autocomplete box.*
+* We can now pass an entity during configuration of the entitypicker source and get it again in the entityValue function definition. This gives greater control and flexibility for generating the value that will be stored in the hidden input fields that are generated when an entity is picked. Look at the Movie picker in the example HTML page.
+
 **New in 0.2.4**
 * Added support for maxEntitiesMessage and data-max-entities-message setting. This replaces the static message that was used when the maxEntities was >= 0. This can be a simple string that will always be set or a function (which takes the maxEntities count as a parameter) and, if the resulting string length is > 0 it will be set, otherwise no title is configured.
 
