@@ -5,6 +5,17 @@ A jQuery plugin which utilizes UI autocomplete to allow for more advanced entity
 
 Here's a [live demo](http://htmlpreview.github.com/?https://github.com/ErikNoren/entitypicker/blob/master/entitypickerdemo.html?v=8) to check out some of the features.
 
+**New in 0.4.0**
+
+* Added "option strict" to help find some scoping issues - there might have been some uncaught if I didn't run through every case.
+* A few bug fixes related to scoping and instant-results with local data.
+* In this version there is support for immediately searching for options on focus of the picker field if the minLength is 0.
+* As a result of the above, searching will also automatically resume if a field has text and was abandoned but got focus again and the amount of text satisfies the minLength option.
+* Renamed minSearchLength to minLength to be synonymous with the autocomplete control - HTML5 style attribute is now `data-min-length`.
+* Added support for delay configuration option and as HTML5 style attribute `data-delay`.
+
+*BREAKING CHANGE: Extensive scope fixes, new auto-start of search if text length is >= minLength, renaming of configuration values.*
+
 **New in 0.3.0**
 
 * We can now pass an entity during configuration of the entitypicker source and get it again in the entityValue function definition. This gives greater control and flexibility for generating the value that will be stored in the hidden input fields that are generated when an entity is picked. Look at the Movie picker in the example HTML page.

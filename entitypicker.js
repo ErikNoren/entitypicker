@@ -51,8 +51,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 			allOptions.maxEntitiesMessage = jQelem.data("max-entities-message");
 		}
 		
-		if (jQelem.data("min-search-length")) {
-			allOptions.minSearchLength = jQelem.data("min-search-length");
+		if (jQelem.data("min-length")) {
+			allOptions.minSearchLength = jQelem.data("min-length");
+		}
+		
+		if (jQelem.data("delay")) {
+			allOptions.delay = jQelem.data("delay");
 		}
 		
 		if (jQelem.data("input-name")) {
@@ -79,7 +83,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 		if ( ! data /*not initialized*/ ) {
 			alert("You must first configure the picker before adding entries.");
 		} else {
-			userContainer = $this.find(".entityPickerParent div:first");
+			var userContainer = $this.find(".entityPickerParent div:first");
 		
 			$.each(entities, function(idx, item) {
 				var existingUser = $this.find(".entityEntry span[data-entity-id='" + item.value + "']");
@@ -88,7 +92,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 					return;
 				}
 		
-				newEntity = $(getEntityHtml(item, data));
+				var newEntity = $(getEntityHtml(item, data));
 				userContainer.append(newEntity);
 				entityAddedEvent.value = data.entityValue.call($this, item);
 				entityAddedEvent.text = item.label;
@@ -110,7 +114,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 		var parentContainer = $this.closest(".entityPickerParent").parent();
 		var data = parentContainer.data(dataKey);
 		
-		entityInput = entityContainer.find("input");
+		var entityInput = entityContainer.find("input");
 		entityRemovedEvent.value = entityInput.val();
 		entityRemovedEvent.inputName = entityInput.attr("name");
 		
@@ -159,7 +163,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 				var data = $this.data(dataKey);
 				
 				if ( ! data ) {
-					configured = resolveOptions($this, options);
+					var configured = resolveOptions($this, options);
 					$this.data(dataKey, configured);
 					
 					//Set up the main HTML container:
@@ -168,7 +172,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 					if (typeof configured.maxEntitiesMessage === "string" && configured.maxEntitiesMessage.length > 0) {
 						$this.attr("title", configured.maxEntitiesMessage);
 					} else if (typeof configured.maxEntitiesMessage === "function") {
-						message = configured.maxEntitiesMessage.call(this, configured.maxEntities);
+						var message = configured.maxEntitiesMessage.call(this, configured.maxEntities);
 						if (typeof message === 'string' && message.length > 0) {
 							$this.attr("title", message);
 						}
@@ -192,7 +196,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 						$this.focus().val($this.val());
 					});
 					
-					pickerInput = $this.find("input.entityPickerInput")
+					var pickerInput = $this.find("input.entityPickerInput")
 					.on("focusout", function(event) {
 						$(this).parent().removeClass("entityContainerFocused");
 					})
@@ -206,9 +210,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 					})
 					.on("keydown", function(event) {
 						var $this = $(this);
-						entityContainer = $this.parent().find(".entityContainer:last");
-						entityEntry = entityContainer.find(".entityEntry");
-						markedForDelete = entityEntry.hasClass("entityDelete");
+						var entityContainer = $this.parent().find(".entityContainer:last");
+						var entityEntry = entityContainer.find(".entityEntry");
+						var markedForDelete = entityEntry.hasClass("entityDelete");
 						
 						if ((event.keyCode == $.ui.keyCode.BACKSPACE) ||
 							(event.keyCode == $.ui.keyCode.DELETE && markedForDelete)) {
@@ -231,7 +235,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 						delay: configured.delay,
 						select: function( event, ui ) {
 							if ( ui.item ) {
-								pickerContainer = $(this).parent(".entityPickerParent").parent();
+								var pickerContainer = $(this).parent(".entityPickerParent").parent();
 								var testItem = ui.item;
 								this.value = "";
 								this.focus();
