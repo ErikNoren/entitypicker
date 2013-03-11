@@ -1,5 +1,5 @@
 /*
-Entity Picker v 0.3.0
+Entity Picker v 0.4.0
 Copyright (C) 2013 Erik Noren
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software
@@ -18,12 +18,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 */
 
 ;(function ( $, undefined ) {
+	"use strict";
+	
 	var dataKey = "entitypicker";
 	var entityAddedEvent = $.Event("entityadded");
 	var entityRemovedEvent = $.Event("entityremoved");
 	
 	var defaults = {
-		minSearchLength: 2, //start search after 2 characters
+		minLength: 2, //start search after 2 characters
+		delay: 500, //time to wait until search starts (ms)
 		maxEntities: -1, //unlimited selection
 		maxEntitiesMessage: function(maxEntityCount) { 
 			return maxEntityCount >= 0 ? "This field is limited to " + maxEntityCount + " selection" + (maxEntityCount != 1 ? "s." : ".") : "";
@@ -70,8 +73,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 	}
 	
 	function internalAddEntities(entities) {
-		$this = this;
-		data = $this.data(dataKey);
+		var $this = this;
+		var data = $this.data(dataKey);
 		
 		if ( ! data /*not initialized*/ ) {
 			alert("You must first configure the picker before adding entries.");
@@ -96,10 +99,32 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 			if (data.maxEntities >= 0) {
 				if ($this.find(".entityContainer").length >= data.maxEntities) {
 					$this.addClass("entityPickerDisabled");
-					$this.find("input.entityPickerInput").hide();
+					$this.find("input.entityPickerInput").autocomplete("option", "disabled", true).hide();
 				}
 			}
 		}
+	}
+	
+	function internalDeleteEntity(entityContainer) {
+		var $this = $(this);
+		var parentContainer = $this.closest(".entityPickerParent").parent();
+		var data = parentContainer.data(dataKey);
+		
+		entityInput = entityContainer.find("input");
+		entityRemovedEvent.value = entityInput.val();
+		entityRemovedEvent.inputName = entityInput.attr("name");
+		
+		var maxEntities = data.maxEntities;
+		var currentEntityCount = entityContainer.length;
+		if (maxEntities < 0 || maxEntities > currentEntityCount) {
+			parentContainer.removeClass("entityPickerDisabled");
+			var autocomplete = parentContainer.find("input.entityPickerInput");
+			autocomplete.show().autocomplete("option", "disabled", false);
+			autocomplete.focus().val(autocomplete.val());
+		}
+		
+		entityContainer.remove();
+		$this.trigger(entityRemovedEvent);
 	}
 	
 	var methods = {
@@ -130,8 +155,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 		
 		init: function(options) {
 			return this.each(function() {
-				$this = $(this);
-				data = $this.data(dataKey);
+				var $this = $(this);
+				var data = $this.data(dataKey);
 				
 				if ( ! data ) {
 					configured = resolveOptions($this, options);
@@ -158,37 +183,29 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 					
 					$this
 					.on("click", "span.deleteEntity", function () {
-						var ctl = $(this).closest(".entityContainer");
-						entityContainer = ctl.find("input");
-						entityRemovedEvent.value = entityContainer.val();
-						entityRemovedEvent.inputName = entityContainer.attr("name");
-						$this.trigger(entityRemovedEvent);
-						ctl.remove();
-						
-						var maxEntities = configured.maxEntities;
-						var currentEntityCount = $this.find(".entityContainer").length;
-						if (maxEntities < 0 || maxEntities > currentEntityCount) {
-							$this.removeClass("entityPickerDisabled");
-							$this.find("input.entityPickerInput").show().focus();
-						}
+						var $this = $(this);
+						var ctl = $this.closest(".entityContainer");
+						internalDeleteEntity.call($this, ctl);
 					})
 					.on("click", ":not(span.deleteEntity)", function (event) {
-						var that = $(this).find("input.entityPickerInput");
-						that.focus().val(that.val());
-						event.stopPropagation();
+						var $this = $(this).find("input.entityPickerInput");
+						$this.focus().val($this.val());
 					});
 					
 					pickerInput = $this.find("input.entityPickerInput")
 					.on("focusout", function(event) {
 						$(this).parent().removeClass("entityContainerFocused");
-						event.stopPropagation();
 					})
 					.on("focusin", function(event) {
-						$(this).parent().addClass("entityContainerFocused");
-						event.stopPropagation();
+						var $this = $(this);
+						$this.parent().addClass("entityContainerFocused");
+						var value = $this.val();
+						if (value.length >= configured.minLength && !($this.autocomplete("option", "disabled"))) {
+							$this.autocomplete("search", value);
+						}
 					})
 					.on("keydown", function(event) {
-						$this = $(this);
+						var $this = $(this);
 						entityContainer = $this.parent().find(".entityContainer:last");
 						entityEntry = entityContainer.find(".entityEntry");
 						markedForDelete = entityEntry.hasClass("entityDelete");
@@ -197,11 +214,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 							(event.keyCode == $.ui.keyCode.DELETE && markedForDelete)) {
 							if ($this.val().length < 1 && entityContainer.length > 0) {
 								if (markedForDelete) {
-									entityInput = entityContainer.find("input");
-									entityRemovedEvent.value = entityInput.val();
-									entityRemovedEvent.inputName = entityInput.attr("name");
-									$this.trigger(entityRemovedEvent);
-									entityContainer.remove();
+									internalDeleteEntity.call($this, entityContainer);
 								} else {
 									entityEntry.addClass("entityDelete");
 								}
@@ -214,15 +227,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 					})
 					.autocomplete({
 						source: configured.source,
-						minLength: configured.minSearchLength,
+						minLength: configured.minLength,
+						delay: configured.delay,
 						select: function( event, ui ) {
 							if ( ui.item ) {
-								pickerContainer = $this.parent(".entityPickerParent").parent("div");
+								pickerContainer = $(this).parent(".entityPickerParent").parent();
 								var testItem = ui.item;
 								this.value = "";
 								this.focus();
 								methods.addEntity.call(pickerContainer, testItem);
-								return false;
+								return false; //stop autocomplete from polluting picker input
 							}
 						},
 						focus: function( event, ui ) {
