@@ -1,5 +1,5 @@
 /*
-Entity Picker v 0.4.0
+Entity Picker v 0.4.1
 Copyright (C) 2013 Erik Noren
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software
@@ -120,7 +120,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 		
 		var maxEntities = data.maxEntities;
 		var currentEntityCount = entityContainer.length;
-		if (maxEntities < 0 || maxEntities > currentEntityCount) {
+		if (maxEntities < 0 || maxEntities >= currentEntityCount) {
 			parentContainer.removeClass("entityPickerDisabled");
 			var autocomplete = parentContainer.find("input.entityPickerInput");
 			autocomplete.show().autocomplete("option", "disabled", false);

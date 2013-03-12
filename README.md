@@ -5,6 +5,10 @@ A jQuery plugin which utilizes UI autocomplete to allow for more advanced entity
 
 Here's a [live demo](http://htmlpreview.github.com/?https://github.com/ErikNoren/entitypicker/blob/master/entitypickerdemo.html?v=8) to check out some of the features.
 
+**New in 0.4.1**
+
+* Fixed a bug when a picker had a maximum selection of 1. Upon deleting the chosen entity, the autocomplete box was not made visible again.
+
 **New in 0.4.0**
 
 * Added "option strict" to help find some scoping issues - there might have been some uncaught if I didn't run through every case.
