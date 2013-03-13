@@ -1,5 +1,5 @@
 /*
-Entity Picker v 0.4.1
+Entity Picker v 0.4.2
 Copyright (C) 2013 Erik Noren
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software
@@ -198,11 +198,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 					
 					var pickerInput = $this.find("input.entityPickerInput")
 					.on("focusout", function(event) {
-						$(this).parent().removeClass("entityContainerFocused");
+						var $this = $(this);
+						$this.parent().removeClass("entityContainerFocused");
+						if ($this.val().length > 0) {
+							$this.addClass("entityPickerUnresolved");
+						}
 					})
 					.on("focusin", function(event) {
 						var $this = $(this);
 						$this.parent().addClass("entityContainerFocused");
+						$this.removeClass("entityPickerUnresolved");
 						var value = $this.val();
 						if (value.length >= configured.minLength && !($this.autocomplete("option", "disabled"))) {
 							$this.autocomplete("search", value);
