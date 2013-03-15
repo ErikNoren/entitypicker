@@ -23,15 +23,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 	var entityRemovedEvent = $.Event("entityremoved");
 	
 	var defaults = {
-		autocomplete: {},
-		autocomplete.minLength: 2, //start search after 2 characters
-		autocomplete.delay: 500, //time to wait until search starts (ms)
+		autocomplete: {
+			minLength: 2, //start search after 2 characters
+			delay: 500, //time to wait until search starts (ms)
+			source: function( request, response ) {
+				response([{label: 'Source Not Configured', value: -1}]);
+			}
+		},
 		maxEntities: -1, //unlimited selection
 		maxEntitiesMessage: function(maxEntityCount) { 
 			return maxEntityCount >= 0 ? "This field is limited to " + maxEntityCount + " selection" + (maxEntityCount != 1 ? "s." : ".") : "";
-		},
-		autocomplete.source: function( request, response ) {
-			response([{label: 'Source Not Configured', value: -1}]);
 		},
 		entityValue: function(entity) {
 			return entity.value + ";" + entity.label;
