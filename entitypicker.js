@@ -1,5 +1,5 @@
 /*
-Entity Picker v 0.4.4
+Entity Picker v 0.5.0
 Copyright (C) 2013 Erik Noren
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software
@@ -17,21 +17,20 @@ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-;(function ( $, undefined ) {
-	"use strict";
-	
+;(function ( $, undefined ) {	
 	var dataKey = "entitypicker";
 	var entityAddedEvent = $.Event("entityadded");
 	var entityRemovedEvent = $.Event("entityremoved");
 	
 	var defaults = {
-		minLength: 2, //start search after 2 characters
-		delay: 500, //time to wait until search starts (ms)
+		autocomplete: {},
+		autocomplete.minLength: 2, //start search after 2 characters
+		autocomplete.delay: 500, //time to wait until search starts (ms)
 		maxEntities: -1, //unlimited selection
 		maxEntitiesMessage: function(maxEntityCount) { 
 			return maxEntityCount >= 0 ? "This field is limited to " + maxEntityCount + " selection" + (maxEntityCount != 1 ? "s." : ".") : "";
 		},
-		source: function( request, response ) {
+		autocomplete.source: function( request, response ) {
 			response([{label: 'Source Not Configured', value: -1}]);
 		},
 		entityValue: function(entity) {
@@ -52,11 +51,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 		}
 		
 		if (jQelem.data("min-length")) {
-			allOptions.minLength = jQelem.data("min-length");
+			allOptions.autocomplete.minLength = jQelem.data("min-length");
 		}
 		
 		if (jQelem.data("delay")) {
-			allOptions.delay = jQelem.data("delay");
+			allOptions.autocomplete.delay = jQelem.data("delay");
 		}
 		
 		if (jQelem.data("input-name")) {
@@ -196,6 +195,36 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 						}
 					}
 					
+					//join autocomplete properties with our necessary presets
+					var autocompleteProperties = $.extend({}, configured.autocomplete, {
+						source: configured.source,
+						minLength: configured.minLength,
+						delay: configured.delay,
+						select: function( event, ui ) {
+							if ( ui.item ) {
+								var pickerContainer = $(this).parent(".entityPickerParent").parent();
+								var testItem = ui.item;
+								this.value = "";
+								this.focus();
+								methods.addEntity.call(pickerContainer, testItem);
+								return false; //stop autocomplete from polluting picker input
+							}
+						},
+						focus: function( event, ui ) {
+							//prevent the autocomplete's input from changing as the user
+							//navigates the available options. This seems like a better
+							//user experience when data isn't a simple list.
+							this.selectedItem = null;
+							return false;
+						},
+						open: function() {
+							$( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+						},
+						close: function() {
+							$( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+						}
+					});
+					
 					$this
 					.on("click", "span.deleteEntity", function () {
 						var $this = $(this);
@@ -245,34 +274,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 							}
 						}
 					})
-					.autocomplete({
-						source: configured.source,
-						minLength: configured.minLength,
-						delay: configured.delay,
-						select: function( event, ui ) {
-							if ( ui.item ) {
-								var pickerContainer = $(this).parent(".entityPickerParent").parent();
-								var testItem = ui.item;
-								this.value = "";
-								this.focus();
-								methods.addEntity.call(pickerContainer, testItem);
-								return false; //stop autocomplete from polluting picker input
-							}
-						},
-						focus: function( event, ui ) {
-							//prevent the autocomplete's input from changing as the user
-							//navigates the available options. This seems like a better
-							//user experience when data isn't a simple list.
-							this.selectedItem = null;
-							return false;
-						},
-						open: function() {
-							$( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
-						},
-						close: function() {
-							$( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
-						}
-					});
+					.autocomplete(autocompleteProperties);
 				}
 			});
 		}

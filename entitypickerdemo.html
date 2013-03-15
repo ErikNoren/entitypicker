@@ -14,7 +14,7 @@
 		$(function() {
 			$(".locationsearch").entitypicker({
 				maxEntities: 3,
-				source: function(request, response) {
+				autocomplete.source: function(request, response) {
 					$.ajax({
 						type: 'GET',
 						url: "http://query.yahooapis.com/v1/public/yql?format=json&q=select%20name%2Cwoeid%2Ccountry%2Cadmin1%20from%20geo.places%20where%20text%3D%22" + request.term + "%22",
@@ -45,7 +45,7 @@
 					/* In source:success function we passed in the item to get access to data elements here! */
 					return item.value + "(" + item.entity.year + ")";
 				},
-				source: function(request, response) {
+				autocomplete.source: function(request, response) {
 					$.ajax({
 						type: 'GET',
 						url: 'http://imdbapi.org/?type=json&plot=none&episode=0&limit=10&yg=0&mt=none&lang=en-US&offset=&aka=simple&release=simple&business=0&tech=0&title=' + request.term,
