@@ -7,7 +7,8 @@ Here's a [live demo](http://htmlpreview.github.com/?https://github.com/ErikNoren
 
 **New in 0.4.3**
 
-* Added a new callable function `` which will update the autocomplete's source. This is most useful for local data changes. It does not udpate any other settings like minLength, delay, etc.
+* Added a new callable function `changeSource` which will update the autocomplete's source. This is most useful for local data changes. It does not udpate any other settings like minLength, delay, etc.
+ex: $("#localDataPicker").entitypicker("changeSource", [{label: 'New Option 1', value: 1},{label: 'New Option 2', value: 2},...]);
 
 **New in 0.4.2**
 
