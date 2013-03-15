@@ -251,7 +251,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 						$this.parent().addClass("entityContainerFocused");
 						$this.removeClass("entityPickerUnresolved");
 						var value = $this.val();
-						if (value.length >= configured.minLength && !($this.autocomplete("option", "disabled"))) {
+						if (value.length >= configured.autocomplete.minLength && !($this.autocomplete("option", "disabled"))) {
 							$this.autocomplete("search", value);
 						}
 					})
