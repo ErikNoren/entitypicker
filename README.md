@@ -5,6 +5,10 @@ A jQuery plugin which utilizes UI autocomplete to allow for more advanced entity
 
 Here's a [live demo](http://htmlpreview.github.com/?https://github.com/ErikNoren/entitypicker/blob/master/entitypickerdemo.html?v=8) to check out some of the features.
 
+**New in 0.4.3**
+
+* Added a new callable function `` which will update the autocomplete's source. This is most useful for local data changes. It does not udpate any other settings like minLength, delay, etc.
+
 **New in 0.4.2**
 
 * Added a new style `entityPickerUnresolved` which is added to the autocomplete input box if focus is lost before an option is selected. It's removed on focus in. This allows for styling to hint to a user that their value is invalid and won't be saved.

@@ -1,5 +1,5 @@
 /*
-Entity Picker v 0.4.2
+Entity Picker v 0.4.3
 Copyright (C) 2013 Erik Noren
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software
@@ -155,6 +155,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 			});
 			
 			return entities;
+		},
+		
+		changeSource: function(source) {
+			var $this = $(this);
+			var data = $this.data(dataKey);
+			
+			if ( ! data /*not initialized*/ ) {
+				alert("You must first configure the picker before refreshing the autocomplete source.");
+			} else {
+				$this.find("input.entityPickerInput").autocomplete("option", "source", source);
+			}
 		},
 		
 		init: function(options) {
