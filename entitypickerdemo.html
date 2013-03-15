@@ -15,6 +15,7 @@
 			$(".locationsearch").entitypicker({
 				maxEntities: 3,
 				autocomplete: {
+					autoFocus: true,
 					source: function(request, response) {
 						$.ajax({
 							type: 'GET',
