@@ -14,30 +14,32 @@
 		$(function() {
 			$(".locationsearch").entitypicker({
 				maxEntities: 3,
-				autocomplete: {source: function(request, response) {
-					$.ajax({
-						type: 'GET',
-						url: "http://query.yahooapis.com/v1/public/yql?format=json&q=select%20name%2Cwoeid%2Ccountry%2Cadmin1%20from%20geo.places%20where%20text%3D%22" + request.term + "%22",
-						dataType: 'jsonp',
-						crossDomain: true,
-						error: function(a,b,c) { alert("Error: " + b + "; " + c); },
-						success: function (data, textStatus) {
-							if (data.query.count > 0) {
-								var dataObj = data.query.count == 1 ? data.query.results : data.query.results.place;
-								response( $.map(dataObj, function(item) {
-									return {
-										value: item.woeid,
-										label: item.name + 
-											(item.admin1 ? (item.admin1.type == 'State' || item.admin1.type == 'Province') ? ', '+item.admin1.content : '' : '')  + 
-											(item.country ? ' (' + item.country.code + ')' : '')
-									};
-								}));
-							} else {
-								response([]);
+				autocomplete: {
+					source: function(request, response) {
+						$.ajax({
+							type: 'GET',
+							url: "http://query.yahooapis.com/v1/public/yql?format=json&q=select%20name%2Cwoeid%2Ccountry%2Cadmin1%20from%20geo.places%20where%20text%3D%22" + request.term + "%22",
+							dataType: 'jsonp',
+							crossDomain: true,
+							error: function(a,b,c) { alert("Error: " + b + "; " + c); },
+							success: function (data, textStatus) {
+								if (data.query.count > 0) {
+									var dataObj = data.query.count == 1 ? data.query.results : data.query.results.place;
+									response( $.map(dataObj, function(item) {
+										return {
+											value: item.woeid,
+											label: item.name + 
+												(item.admin1 ? (item.admin1.type == 'State' || item.admin1.type == 'Province') ? ', '+item.admin1.content : '' : '')  + 
+												(item.country ? ' (' + item.country.code + ')' : '')
+										};
+									}));
+								} else {
+									response([]);
+								}
 							}
-						}
-					});
-				}}
+						});
+					}
+				}
 			});
 			
 			$("#imdbshows").entitypicker({
@@ -45,28 +47,30 @@
 					/* In source:success function we passed in the item to get access to data elements here! */
 					return item.value + "(" + item.entity.year + ")";
 				},
-				autocomplete: {source: function(request, response) {
-					$.ajax({
-						type: 'GET',
-						url: 'http://imdbapi.org/?type=json&plot=none&episode=0&limit=10&yg=0&mt=none&lang=en-US&offset=&aka=simple&release=simple&business=0&tech=0&title=' + request.term,
-						dataType: 'json',
-						crossDomain: true,
-						error: function(a,b,c) { alert("Error: " + b + "; " + c); },
-						success: function (data, textStatus) {
-							if (data && data.length > 0) {
-								response( $.map(data, function(item) {
-									return {
-										value: item.imdb_id, /* set autocomplete parameters */
-										label: item.title,
-										entity: item /* pass item; we can use it in entityValue! */
-									};
-								}));
-							} else {
-								response([]);
+				autocomplete: {
+					source: function(request, response) {
+						$.ajax({
+							type: 'GET',
+							url: 'http://imdbapi.org/?type=json&plot=none&episode=0&limit=10&yg=0&mt=none&lang=en-US&offset=&aka=simple&release=simple&business=0&tech=0&title=' + request.term,
+							dataType: 'json',
+							crossDomain: true,
+							error: function(a,b,c) { alert("Error: " + b + "; " + c); },
+							success: function (data, textStatus) {
+								if (data && data.length > 0) {
+									response( $.map(data, function(item) {
+										return {
+											value: item.imdb_id, /* set autocomplete parameters */
+											label: item.title,
+											entity: item /* pass item; we can use it in entityValue! */
+										};
+									}));
+								} else {
+									response([]);
+								}
 							}
-						}
-					});
-				}}
+						});
+					}
+				}
 			});
 			
 			$(".locationsearch")
