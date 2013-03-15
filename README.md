@@ -5,7 +5,7 @@ A jQuery plugin which utilizes UI autocomplete to allow for more advanced entity
 
 Here's a [live demo+](http://htmlpreview.github.com/?https://github.com/ErikNoren/entitypicker/blob/master/entitypickerdemo.html?v=10) to check out some of the features.
 
-*+ Due to the way GitHub seems to serve CSS and JS files with mime types inconsistent with standard, IE seems to refuse to load the resources. Seems to work fine in Chrome though console warnings about mime type mismatch do appear.*
+*+ Due to the way GitHub seems to serve CSS and JS files with mime types inconsistent with standard, IE is refusing to load the resources. This appears to work fine in Chrome though console warnings about mime type mismatch do appear.*
 
 **New in 0.5.0**
 
