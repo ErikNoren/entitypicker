@@ -41,6 +41,32 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 		}
 	};
 	
+	var requiredAutocompleteOptions = {
+		select: function( event, ui ) {
+			if ( ui.item ) {
+				var pickerContainer = $(this).parent(".entityPickerParent").parent();
+				var testItem = ui.item;
+				this.value = "";
+				this.focus();
+				methods.addEntity.call(pickerContainer, testItem);
+				return false; //stop autocomplete from polluting picker input
+			}
+		},
+		focus: function( event, ui ) {
+			//prevent the autocomplete's input from changing as the user
+			//navigates the available options. This seems like a better
+			//user experience when data isn't a simple list.
+			this.selectedItem = null;
+			return false;
+		},
+		open: function() {
+			$( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+		},
+		close: function() {
+			$( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+		}
+	};
+	
 	function resolveOptions(jQelem, options) {
 		var allOptions = $.extend({}, defaults, options);
 		
@@ -199,34 +225,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 					}
 					
 					//join autocomplete properties with our necessary presets
-					var autocompleteProperties = $.extend({}, configured.autocomplete, {
-						source: configured.source,
-						minLength: configured.minLength,
-						delay: configured.delay,
-						select: function( event, ui ) {
-							if ( ui.item ) {
-								var pickerContainer = $(this).parent(".entityPickerParent").parent();
-								var testItem = ui.item;
-								this.value = "";
-								this.focus();
-								methods.addEntity.call(pickerContainer, testItem);
-								return false; //stop autocomplete from polluting picker input
-							}
-						},
-						focus: function( event, ui ) {
-							//prevent the autocomplete's input from changing as the user
-							//navigates the available options. This seems like a better
-							//user experience when data isn't a simple list.
-							this.selectedItem = null;
-							return false;
-						},
-						open: function() {
-							$( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
-						},
-						close: function() {
-							$( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
-						}
-					});
+					var autocompleteProperties = $.extend({}, configured.autocomplete, requiredAutocompleteOptions);
 					
 					$this
 					.on("click", "span.deleteEntity", function () {
