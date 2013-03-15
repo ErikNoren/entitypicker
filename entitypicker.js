@@ -25,7 +25,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 	var entityRemovedEvent = $.Event("entityremoved");
 	
 	var defaults = {
-		autocomplete: {
+		internalautocomplete: {
 			minLength: 2, //start search after 2 characters
 			delay: 500, //time to wait until search starts (ms)
 			source: function( request, response ) {
@@ -80,11 +80,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 		}
 		
 		if (jQelem.data("min-length")) {
-			allOptions.autocomplete.minLength = jQelem.data("min-length");
+			allOptions.internalautocomplete.minLength = jQelem.data("min-length");
 		}
 		
 		if (jQelem.data("delay")) {
-			allOptions.autocomplete.delay = jQelem.data("delay");
+			allOptions.internalautocomplete.delay = jQelem.data("delay");
 		}
 		
 		if (jQelem.data("input-name")) {
@@ -225,7 +225,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 					}
 					
 					//join autocomplete properties with our necessary presets
-					var autocompleteProperties = $.extend({}, configured.autocomplete, requiredAutocompleteOptions);
+					var autocompleteProperties = $.extend({}, configured.internalautocomplete, configured.autocomplete, requiredAutocompleteOptions);
 					
 					$this
 					.on("click", "span.deleteEntity", function () {
