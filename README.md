@@ -5,6 +5,10 @@ A jQuery plugin which utilizes UI autocomplete to allow for more advanced entity
 
 Here's a [live demo](http://htmlpreview.github.com/?https://github.com/ErikNoren/entitypicker/blob/master/entitypickerdemo.html?v=9) to check out some of the features.
 
+**New in 0.4.4**
+
+* Bug fix for html5 style data attribute `data-min-length` fixed to set the `minLength` property, not the old minSearchLength property.
+
 **New in 0.4.3**
 
 * Added a new callable function `changeSource` which will update the autocomplete's source. This is most useful for local data changes. It does not udpate any other settings like minLength, delay, etc.

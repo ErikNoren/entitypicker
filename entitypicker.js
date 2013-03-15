@@ -1,5 +1,5 @@
 /*
-Entity Picker v 0.4.3
+Entity Picker v 0.4.4
 Copyright (C) 2013 Erik Noren
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software
@@ -52,7 +52,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 		}
 		
 		if (jQelem.data("min-length")) {
-			allOptions.minSearchLength = jQelem.data("min-length");
+			allOptions.minLength = jQelem.data("min-length");
 		}
 		
 		if (jQelem.data("delay")) {
