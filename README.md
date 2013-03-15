@@ -3,7 +3,7 @@ entitypicker
 
 A jQuery plugin which utilizes UI autocomplete to allow for more advanced entity (people or users, places, things) picking and editing. It supports all the sources jQuery autocomplete supports, generates HTML input tags that are suitable for submitting through a form as well as the ability to retrieve the chosen entities as JSON objects for use in AJAX style services. Using the entitypicker methods, you can add entities programmatically in order to restore values that have previously been saved (for use on an edit screen, for instance).
 
-Here's a [live demo](http://htmlpreview.github.com/?https://github.com/ErikNoren/entitypicker/blob/master/entitypickerdemo.html?v=8) to check out some of the features.
+Here's a [live demo](http://htmlpreview.github.com/?https://github.com/ErikNoren/entitypicker/blob/master/entitypickerdemo.html?v=9) to check out some of the features.
 
 **New in 0.4.3**
 
