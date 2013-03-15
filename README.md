@@ -5,6 +5,13 @@ A jQuery plugin which utilizes UI autocomplete to allow for more advanced entity
 
 Here's a [live demo](http://htmlpreview.github.com/?https://github.com/ErikNoren/entitypicker/blob/master/entitypickerdemo.html?v=9) to check out some of the features.
 
+**New in 0.5.0**
+
+* Changes to allow autocomplete options to be passed on directly to autocomplete plugin after applying our specific needs.
+* Updated the HTML example to show the new syntax and demonstrate passing through the autoFocus option which we've previously never handled.
+
+*BREAKING CHANGE: The way you define autocomplete-specific settings has changed. With this change we just pass through any setting specified directly to the autocomplete plugin during initialization. This frees entitypicker up from knowing about all / adding settings for all autocomplete options.
+
 **New in 0.4.4**
 
 * Bug fix for html5 style data attribute `data-min-length` fixed to set the `minLength` property, not the old minSearchLength property.
