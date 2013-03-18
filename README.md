@@ -7,6 +7,13 @@ Here's a [live demo+](http://htmlpreview.github.com/?https://github.com/ErikNore
 
 *+Due to the way GitHub seems to serve CSS and JS files with mime types inconsistent with standard, IE is refusing to load the resources. This appears to work fine in Chrome though console warnings about mime type mismatch do appear.*
 
+**New in 0.5.1**
+
+* Fixed chainging in changeSource (wouldn't work correctly if called on multiple pickers at once from the same jQuery selector)
+* Added new callable method `clearEntities` to clear out all entities in a picker. Also chainable for multiple pickers.
+* Refactored internal entity delete code to do the delete both for individual entity deletes and the clearEntities call.
+* Delete event notification is triggered on each deleted item both for individual entity deletes and clearEntities calls.
+
 **New in 0.5.0**
 
 * Changes to allow autocomplete options to be passed on directly to autocomplete plugin after applying our specific needs.

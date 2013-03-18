@@ -1,5 +1,5 @@
 /*
-Entity Picker v 0.5.0
+Entity Picker v 0.5.1
 Copyright (C) 2013 Erik Noren
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software
@@ -142,9 +142,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 		var parentContainer = $this.closest(".entityPickerParent").parent();
 		var data = parentContainer.data(dataKey);
 		
-		var entityInput = entityContainer.find("input");
-		entityRemovedEvent.value = entityInput.val();
-		entityRemovedEvent.inputName = entityInput.attr("name");
+		deleteEntity.call($this, entityContainer);
 		
 		var maxEntities = data.maxEntities;
 		var currentEntityCount = entityContainer.length;
@@ -154,9 +152,29 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 			autocomplete.show().autocomplete("option", "disabled", false);
 			autocomplete.focus().val(autocomplete.val());
 		}
+	}
+	
+	function internalDeleteEntities(data) {
+		var $this = this; //called with jquery context
+		$this.find("div.entityContainer").each(function(idx, elem) {
+			deleteEntity.call($this, $(elem));
+		});
+		
+		var maxEntities = data.maxEntities;
+		if (maxEntities != 0) {
+			$this.removeClass("entityPickerDisabled");
+			$this.find("input.entityPickerInput").show().autocomplete("option", "disabled", false);
+		}
+	}
+	
+	function deleteEntity(entityContainer) {
+		var $input = entityContainer.find("input");
+		
+		entityRemovedEvent.value = $input.val();
+		entityRemovedEvent.inputName = $input.attr("name");
 		
 		entityContainer.remove();
-		$this.trigger(entityRemovedEvent);
+		this.trigger(entityRemovedEvent);
 	}
 	
 	var methods = {
@@ -186,14 +204,31 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 		},
 		
 		changeSource: function(source) {
-			var $this = $(this);
-			var data = $this.data(dataKey);
-			
-			if ( ! data /*not initialized*/ ) {
-				alert("You must first configure the picker before refreshing the autocomplete source.");
-			} else {
-				$this.find("input.entityPickerInput").autocomplete("option", "source", source);
-			}
+			return this.each(function() {
+				var $this = $(this);
+				var data = $this.data(dataKey);
+				
+				if ( ! data /*not initialized*/ ) {
+					alert("You must first configure the picker before refreshing the autocomplete source.");
+				} else {
+					$this.find("input.entityPickerInput").autocomplete("option", "source", source);
+				}
+			});
+		},
+		
+		clearEntities: function() {
+			return this.each(function() {
+				var $this = $(this);
+				var data = $this.data(dataKey);
+				
+				if ( ! data /*not initialized*/ ) {
+					alert("You must first configure the picker before calling methods.");
+				} else {
+					$this.find(".entityContainer").each(function(idx, elem) {
+						internalDeleteEntities.call($this, data);
+					});
+				}
+			});
 		},
 		
 		init: function(options) {
