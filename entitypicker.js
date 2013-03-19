@@ -1,5 +1,5 @@
 /*
-Entity Picker v 0.5.1
+Entity Picker v 0.5.2
 Copyright (C) 2013 Erik Noren
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software
@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 	var dataKey = "entitypicker";
 	var entityAddedEvent = $.Event("entityadded");
 	var entityRemovedEvent = $.Event("entityremoved");
+	var entitySearchUnresolved = $.Event("entityunresolved");
 	
 	var defaults = {
 		_autocomplete: {
@@ -271,6 +272,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 					.on("click", ":not(span.deleteEntity)", function (event) {
 						var $this = $(this).find("input.entityPickerInput");
 						$this.focus().val($this.val());
+						event.stopPropagation();
 					});
 					
 					var pickerInput = $this.find("input.entityPickerInput")
@@ -279,6 +281,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 						$this.parent().removeClass("entityContainerFocused");
 						if ($this.val().length > 0) {
 							$this.addClass("entityPickerUnresolved");
+							$this.trigger(entitySearchUnresolved);
 						}
 					})
 					.on("focusin", function(event) {
