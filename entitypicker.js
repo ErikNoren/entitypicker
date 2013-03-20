@@ -264,14 +264,25 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 					var autocompleteProperties = $.extend({}, configured._autocomplete, configured.autocomplete, requiredAutocompleteOptions);
 					
 					$this
-					.on("click", "span.deleteEntity", function () {
+					.on("click", "span.deleteEntity", function (event) {
 						var $this = $(this);
 						var ctl = $this.closest(".entityContainer");
 						internalDeleteEntity.call($this, ctl);
+						event.stopPropagation();
 					})
 					.on("click", ":not(span.deleteEntity)", function (event) {
-						var $this = $(this).find("input.entityPickerInput");
-						$this.focus().val($this.val());
+						var $this = $(this);
+						var inputIsChild = $this.find("input.entityPickerInput");
+						
+						if (inputIsChild.length > 0) {
+							inputIsChild.focus().val(inputIsChild.val());
+						} else {
+							var value = $(this).val();
+							if (value.length >= autocompleteProperties.minLength && !($this.autocomplete("option", "disabled"))) {
+								$this.autocomplete("search", value);
+							}
+						}
+						
 						event.stopPropagation();
 					});
 					

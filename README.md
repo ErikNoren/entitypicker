@@ -7,6 +7,12 @@ Here's a [live demo+](http://htmlpreview.github.com/?https://github.com/ErikNore
 
 *+Due to the way GitHub seems to serve CSS and JS files with mime types inconsistent with standard, IE is refusing to load the resources. This appears to work fine in Chrome though console warnings about mime type mismatch do appear.*
 
+**New in 0.5.2**
+
+* Fixed bubbling of events in click handlers causing problems - now bubbling is stopped.
+* Fixed a quirk with local searches not showing options if you clicked into the input field versus the parent picker field.
+* Added a new jQuery Event notification `entityunresolved` which is raised when a user leaves a picker field without chosing an option, leaving just empty text behind. This is to help support custom validation of fields.
+
 **New in 0.5.1**
 
 * Fixed chainging in changeSource (wouldn't work correctly if called on multiple pickers at once from the same jQuery selector)
