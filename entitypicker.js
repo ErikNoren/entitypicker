@@ -23,7 +23,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 	var dataKey = "entitypicker";
 	var entityAddedEvent = $.Event("entityadded");
 	var entityRemovedEvent = $.Event("entityremoved");
-	var entitySearchUnresolved = $.Event("entityunresolved");
 	
 	var defaults = {
 		_autocomplete: {
@@ -292,7 +291,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 						$this.parent().removeClass("entityContainerFocused");
 						if ($this.val().length > 0) {
 							$this.addClass("entityPickerUnresolved");
-							$this.trigger(entitySearchUnresolved);
+							$this.trigger("entityunresolved");
 						}
 					})
 					.on("focusin", function(event) {

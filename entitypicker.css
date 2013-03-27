@@ -23,6 +23,10 @@ input.entityPickerInput:focus {
 	clear: both;
 }
 
+.entityPickerUnresolved {
+	color: red;
+}
+
 .entityPickerDisabled {
 	background-color: #AAB;
 }
