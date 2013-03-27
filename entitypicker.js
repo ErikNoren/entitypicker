@@ -1,5 +1,5 @@
 /*
-Entity Picker v 0.5.2
+Entity Picker v 0.5.3
 Copyright (C) 2013 Erik Noren
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software
