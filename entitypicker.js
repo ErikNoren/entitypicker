@@ -1,5 +1,5 @@
 /*
-Entity Picker v 0.5.3
+Entity Picker v 0.5.4
 Copyright (C) 2013 Erik Noren
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software
@@ -71,23 +71,23 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 		var allOptions = $.extend({}, defaults, options);
 		
 		//check for supported html5 data members and override global options
-		if (jQelem.data("max-entities")) {
+		if (typeof jQelem.data("max-entities") !== 'undefined') {
 			allOptions.maxEntities = jQelem.data("max-entities");
 		}
 		
-		if (jQelem.data("max-entities-message")) {
+		if (typeof jQelem.data("max-entities-message") !== 'undefined') {
 			allOptions.maxEntitiesMessage = jQelem.data("max-entities-message");
 		}
 		
-		if (jQelem.data("min-length")) {
+		if (typeof jQelem.data("min-length") !== 'undefined') {
 			allOptions._autocomplete.minLength = jQelem.data("min-length");
 		}
 		
-		if (jQelem.data("delay")) {
+		if (typeof jQelem.data("delay") !== 'undefined') {
 			allOptions._autocomplete.delay = jQelem.data("delay");
 		}
 		
-		if (jQelem.data("input-name")) {
+		if (typeof jQelem.data("input-name") !== 'undefined') {
 			allOptions.inputName = jQelem.data("input-name");
 		} else {
 			allOptions.inputName = jQelem.attr('id');
