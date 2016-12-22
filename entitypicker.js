@@ -1,5 +1,5 @@
 /*
-Entity Picker v 0.5.4
+Entity Picker v 0.5.5
 Copyright (C) 2013 Erik Noren
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software
@@ -173,8 +173,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 		entityRemovedEvent.value = $input.val();
 		entityRemovedEvent.inputName = $input.attr("name");
 		
-		entityContainer.remove();
 		this.trigger(entityRemovedEvent);
+		entityContainer.remove();
 	}
 	
 	var methods = {
