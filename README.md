@@ -7,6 +7,10 @@ Here's a [live demo+](http://htmlpreview.github.com/?https://github.com/ErikNore
 
 *+Due to the way GitHub seems to serve CSS and JS files with mime types inconsistent with standard, IE is refusing to load the resources. This appears to work fine in Chrome though console warnings about mime type mismatch do appear.*
 
+**Bug fix in 0.5.5
+
+* Removing a selection now properly raises the entityRemovedEvent. Thanks to jpock76 for spotting the swapped lines. Addresses Issue #6 "entityremoved not being raised"
+
 **New in 0.5.2**
 
 * Fixed bubbling of events in click handlers causing problems - now bubbling is stopped.
