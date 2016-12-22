@@ -9,7 +9,7 @@ Here's a [live demo+](http://htmlpreview.github.com/?https://github.com/ErikNore
 
 **Bug fix in 0.5.5**
 
-* Removing a selection now properly raises the entityRemovedEvent. Thanks to jpock76 for spotting the swapped lines. Fixes Issue #6 "entityremoved not being raised"
+* Removing a selection now properly raises the entityRemovedEvent. Thanks to jpock76 for spotting the swapped lines. Closed #6 "entityremoved not being raised"
 
 **New in 0.5.2**
 
